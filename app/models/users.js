@@ -24,8 +24,8 @@ userSchema = new Schema({
 	},
 	password: {
 		type: String,
-		minlength: 4,
-		maxlength: 128,
+		minlength: 8,
+		maxlength: 16,
 		requrired: true,
 		validate: {
 			validator: function(value) {

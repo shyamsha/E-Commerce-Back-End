@@ -14,13 +14,8 @@ const reviewSchema = new Schema({
 	},
 	rating: {
 		type: Number,
-		minlength: 1,
-		maxlength: 5,
-		required: true
-	},
-	user: {
-		type: Schema.Types.ObjectId,
-		ref: "User",
+		min: 1,
+		max: 5,
 		required: true
 	},
 	user: {

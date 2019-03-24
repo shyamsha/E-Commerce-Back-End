@@ -86,6 +86,15 @@ router.delete("/logoutall", authenticationByUser, (req, res) => {
 // 			res.send(err);
 // 		});
 // });
+router.get("/", (req, res) => {
+	User.find()
+		.then(user => {
+			res.send(user);
+		})
+		.catch(err => {
+			res.send(err);
+		});
+});
 
 module.exports = {
 	user: router
