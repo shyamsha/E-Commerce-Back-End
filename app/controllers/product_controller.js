@@ -4,6 +4,7 @@ const multer = require("multer");
 const router = express.Router();
 const path = require("path");
 const { Product } = require("../models/products");
+const { autherizationByUser } = require("./middlewares/autherization");
 const {
 	authenticationByUser
 } = require("../controllers/middlewares/authenticate");
@@ -39,7 +40,7 @@ router.get("/", (req, res) => {
 			if (product.length != 0) {
 				res.send(product);
 			} else {
-				res.send({});
+				res.send([]);
 			}
 		})
 		.catch(err => {
@@ -57,27 +58,34 @@ router.get("/:id", (req, res) => {
 			res.send(err);
 		});
 });
-router.post("/", upload.single("imageUrl"), (req, res) => {
-	const dest = req.file.destination;
-	const imagePath = "http://localhost:3001" + dest.slice(1) + req.file.filename;
+router.post(
+	"/",
 
-	const product = new Product({
-		name: req.body.name,
-		description: req.body.description,
-		price: req.body.price,
-		stock: req.body.stock,
-		category: req.body.category,
-		imageUrl: imagePath
-	});
-	product
-		.save()
-		.then(product => {
-			res.send(product);
-		})
-		.catch(err => {
-			res.send(err);
+	upload.single("imageUrl"),
+	(req, res) => {
+		const dest = req.file.destination;
+		const imagePath =
+			"http://localhost:3001" + dest.slice(1) + req.file.filename;
+
+		const product = new Product({
+			name: req.body.name,
+			description: req.body.description,
+			price: req.body.price,
+			stock: req.body.stock,
+			category: req.body.category,
+			imageUrl: imagePath
 		});
-});
+
+		product
+			.save()
+			.then(product => {
+				res.send(product);
+			})
+			.catch(err => {
+				res.send(err);
+			});
+	}
+);
 
 router.put("/:id", (req, res) => {
 	Product.findOneAndUpdate(
@@ -98,7 +106,7 @@ router.put("/:id", (req, res) => {
 			res.send(err);
 		});
 });
-router.delete("/:id", (req, res) => {
+router.delete("/:id", (req, res, next) => {
 	Product.findOneAndDelete({ _id: req.params.id })
 		.then(product => {
 			res.send(product);
@@ -106,7 +114,9 @@ router.delete("/:id", (req, res) => {
 		.catch(err => {
 			res.send(err);
 		});
+	next();
 });
+
 module.exports = {
-	product_url: router
+	productController: router
 };

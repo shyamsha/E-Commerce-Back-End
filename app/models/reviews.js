@@ -18,10 +18,13 @@ const reviewSchema = new Schema({
 		max: 5,
 		required: true
 	},
+	createdAt: {
+		type: Date,
+		default: Date.now
+	},
 	user: {
 		type: Schema.Types.ObjectId,
-		ref: "User",
-		required: true
+		ref: "User"
 	},
 	product: {
 		type: Schema.Types.ObjectId,

@@ -1,9 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {
-	authenticationByUser
-} = require("../controllers/middlewares/authenticate");
-
+const { authenticationByUser } = require("./middlewares/authenticate");
 const { User } = require("../models/users");
 
 router.post("/register", (req, res) => {
@@ -19,6 +16,7 @@ router.post("/register", (req, res) => {
 });
 router.post("/login", (req, res) => {
 	const body = req.body;
+
 	//static method
 	User.findByCredentials(body.email, body.password)
 		.then(user => {
@@ -34,9 +32,9 @@ router.post("/login", (req, res) => {
 			res.send(err);
 		});
 });
-router.delete("/logout", authenticationByUser, (req, res) => {
+router.delete("/logout", (req, res) => {
 	const tokenData = req.token;
-	User.findOne(
+	User.findOneAndUpdate(
 		{ _id: req.user._id },
 		{ $pull: { tokens: { token: tokenData } } }
 	)
@@ -49,9 +47,9 @@ router.delete("/logout", authenticationByUser, (req, res) => {
 			res.send(err);
 		});
 });
-router.delete("/logoutall", authenticationByUser, (req, res) => {
+router.delete("/logoutall", (req, res) => {
 	let token = req.token;
-	User.findOne(
+	User.findOneAndUpdate(
 		{ _id: req.user._id },
 		//{ $pull: { tokens: { token: token } } },
 		{ $set: { tokens: { token: [] } } }
@@ -63,29 +61,13 @@ router.delete("/logoutall", authenticationByUser, (req, res) => {
 			// 		}
 			// 	}
 			user.save().then(user => {
-				res.send({ notice: "suceessfully logout from all devices" });
+				res.send("suceessfully logout from all devices");
 			});
 		})
 		.catch(err => {
 			res.send(err);
 		});
 });
-// router.delete("/logout", authenticationByUser, (req, res) => {
-// 	const token = req.header("x-auth");
-// 	console.log(token);
-// 	User.findOne({ "tokens.token": token })
-// 		.then(user => {
-// 			user.tokens = user.tokens.filter(item => {
-// 				return item.token != token;
-// 			});
-// 			user.save().then(user => {
-// 				res.send({ notice: "succcefully loged out" });
-// 			});
-// 		})
-// 		.catch(err => {
-// 			res.send(err);
-// 		});
-// });
 router.get("/", (req, res) => {
 	User.find()
 		.then(user => {
@@ -97,5 +79,5 @@ router.get("/", (req, res) => {
 });
 
 module.exports = {
-	user: router
+	userController: router
 };

@@ -1,9 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { Address } = require("../models/address");
-const {
-	authenticationByUser
-} = require("../controllers/middlewares/authenticate");
+const { authenticationByUser } = require("./middlewares/authenticate");
 const { check } = require("express-validator/check");
 const { sanitize } = require("express-validator/filter");
 router.get("/", (req, res) => {
@@ -21,6 +19,7 @@ router.get("/", (req, res) => {
 });
 router.get("/:id", (req, res) => {
 	const id = req.params.id;
+
 	Address.findOne({ _id: id })
 		.then(address => {
 			res.send(address);
@@ -31,6 +30,7 @@ router.get("/:id", (req, res) => {
 });
 router.post("/", (req, res) => {
 	const address = new Address(req.body);
+
 	address
 		.save()
 		.then(address => {

@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const { Category } = require("../models/categorys");
-//const { Product } = require("../models/products");
+const { authenticationByUser } = require("./middlewares/authenticate");
+const { autherizationByUser } = require("./middlewares/autherization");
+const { Product } = require("../models/products");
 
 router.get("/", (req, res) => {
 	Category.find()
@@ -9,24 +11,27 @@ router.get("/", (req, res) => {
 			if (category.length != 0) {
 				res.send(category);
 			} else {
-				res.send({});
+				res.send([]);
 			}
 		})
 		.catch(err => {
 			res.send(err);
 		});
 });
-router.get("/:id", (req, res) => {
+router.get("/:id", (req, res, next) => {
 	const id = req.params.id;
 
-	Category.findOne({ _id: id })
-		.then(category => {
-			res.send(category);
-		})
-		.catch(err => {
-			res.send(err);
+	Promise.all([
+		Category.findOne({ _id: id }),
+		Product.find({ category: id })
+	]).then(values => {
+		res.send({
+			category: values[0],
+			products: values[1]
 		});
+	});
 });
+
 router.post("/", (req, res) => {
 	const category = new Category(req.body);
 	category
@@ -67,5 +72,5 @@ router.delete("/:id", (req, res) => {
 		});
 });
 module.exports = {
-	category_url: router
+	categoryController: router
 };

@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const cartSchema = require("./carts");
+const monthlyCartSchema = require("./monthlycarts");
 const { Schema } = mongoose;
 userSchema = new Schema({
 	username: {
@@ -25,7 +27,6 @@ userSchema = new Schema({
 	password: {
 		type: String,
 		minlength: 8,
-		maxlength: 16,
 		requrired: true,
 		validate: {
 			validator: function(value) {
@@ -46,6 +47,13 @@ userSchema = new Schema({
 	],
 	role: {
 		type: [String],
+		default: ["user"]
+	},
+	cart: [cartSchema],
+	monthlyCart: [monthlyCartSchema],
+	address: {
+		type: Schema.Types.ObjectId,
+		ref: "Address",
 		required: true
 	}
 });
@@ -95,7 +103,7 @@ userSchema.methods.generateByToken = function() {
 	};
 
 	const token = jwt.sign(userid, "9849084994");
-	console.log(token);
+
 	user.tokens.push({ token });
 	return user
 		.save()
@@ -113,7 +121,7 @@ userSchema.statics.findByToken = function(token) {
 	} catch (err) {
 		return Promise.reject(err);
 	}
-	// console.log();
+
 	return User.findOne({
 		_id: tokenData.user_id,
 		"tokens.token": token //chekin form db delete or present

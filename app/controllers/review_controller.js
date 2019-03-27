@@ -29,6 +29,7 @@ router.get("/:id", (req, res) => {
 });
 router.post("/", (req, res) => {
 	const review = new Review(req.body);
+
 	review
 		.save()
 		.then(review => {
@@ -68,5 +69,5 @@ router.delete("/:id", (req, res) => {
 		});
 });
 module.exports = {
-	review_controler: router
+	reviewController: router
 };

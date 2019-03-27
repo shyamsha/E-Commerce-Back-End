@@ -9,6 +9,7 @@ const addressSchema = new Schema({
 	mobile: {
 		type: String,
 		required: true,
+		maxlength: 10,
 		minlength: 10,
 		validate: {
 			validator: function(value) {
@@ -46,6 +47,11 @@ const addressSchema = new Schema({
 				return "invalid postalCode format";
 			}
 		}
+	},
+	user: {
+		type: Schema.Types.ObjectId,
+		ref: "User",
+		required: true
 	}
 });
 const Address = mongoose.model("Address", addressSchema);
