@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const { Cart } = require("../models/carts");
+const { Monthly } = require("../models/monthlycarts");
 const { Product } = require("../models/products");
 const { authenticationByUser } = require("./middlewares/authenticate");
 
 router.get("/", (req, res) => {
-	Cart.find()
-		.then(cart => {
-			if (cart.length != 0) {
-				res.send(cart);
+	Monthly.find()
+		.then(monthly => {
+			if (monthly.length != 0) {
+				res.send(monthly);
 			} else {
 				res.send([]);
 			}
@@ -19,12 +19,12 @@ router.get("/", (req, res) => {
 });
 router.post("/", (req, res) => {
 	const id = req.params.id;
-	const cart = new Cart(req.body);
+	const monthly = new Monthly(req.body);
 	Promise.all([Product.findOne({ _id: id })]);
-	cart
+	monthly
 		.save()
-		.then(cart => {
-			res.send(cart);
+		.then(monthly => {
+			res.send(monthly);
 		})
 		.catch(err => {
 			res.send(err);
@@ -32,7 +32,7 @@ router.post("/", (req, res) => {
 });
 
 router.put("/:id", (req, res) => {
-	Cart.findOneAndUpdate(
+	Monthly.findOneAndUpdate(
 		{
 			_id: req.params.id
 		},
@@ -43,17 +43,17 @@ router.put("/:id", (req, res) => {
 			new: true
 		}
 	)
-		.then(cart => {
-			res.send(cart);
+		.then(monthly => {
+			res.send(monthly);
 		})
 		.catch(err => {
 			res.send(err);
 		});
 });
 router.delete("/:id", (req, res) => {
-	Cart.findOneAndDelete({ _id: req.params.id })
-		.then(cart => {
-			res.send(cart);
+	Monthly.findOneAndDelete({ _id: req.params.id })
+		.then(monthly => {
+			res.send(monthly);
 		})
 		.catch(err => {
 			res.send(err);

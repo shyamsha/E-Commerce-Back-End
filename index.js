@@ -16,7 +16,7 @@ app.use("/public/uploads", express.static("public/uploads"));
 app.use("/categories", categoryController);
 app.use("/products", productController);
 app.use("/reviews", reviewController);
-// app.use("/carts", cartControler);
+app.use("/carts", cartControler);
 app.use("/addresses", addressController);
 app.use("/orders", orderController);
 app.use("/users", userController);
