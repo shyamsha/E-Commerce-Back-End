@@ -60,5 +60,5 @@ router.delete("/:id", (req, res) => {
 		});
 });
 module.exports = {
-	cartControler: router
+	cartController: router
 };

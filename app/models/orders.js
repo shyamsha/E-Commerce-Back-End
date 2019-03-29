@@ -13,7 +13,7 @@ const orderSchema = new Schema({
 		type: String,
 		required: true
 	},
-	totelOrders: {
+	totalOrders: {
 		type: Number,
 		required: true
 	},

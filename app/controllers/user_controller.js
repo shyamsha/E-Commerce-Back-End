@@ -52,7 +52,7 @@ router.delete("/logoutall", (req, res) => {
 	User.findOneAndUpdate(
 		{ _id: req.user._id },
 		//{ $pull: { tokens: { token: token } } },
-		{ $set: { tokens: { token: [] } } }
+		{ $set: { tokens: [] } }
 	)
 		.then(user => {
 			// 	for (let i = 0; i < user.tokens.length; i++) {

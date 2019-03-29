@@ -8,6 +8,7 @@ const { autherizationByUser } = require("./middlewares/autherization");
 const {
 	authenticationByUser
 } = require("../controllers/middlewares/authenticate");
+const { Category } = require("../models/categorys");
 var storage = multer.diskStorage({
 	destination: function(req, file, callback) {
 		//with out function callback use directely destination:"./public/uploads/"
@@ -36,21 +37,59 @@ var upload = multer(
 
 router.get("/", (req, res) => {
 	Product.find()
+		//.select("name") //select particuler fieldset
+		.populate("category") // give all category filds
+		.then(products => {
+			res.send(products);
+		});
+	// Product.find()
+	// 	.then(product => {
+	// 		if (product.length != 0) {
+	// 			res.send(product);
+	// 		} else {
+	// 			res.send([]);
+	// 		}
+	// 	})
+	// 	.catch(err => {
+	// 		res.send(err);
+	// 	});
+});
+router.get("/:id", (req, res) => {
+	Product.findById(req.params.id)
+		.populate("category")
 		.then(product => {
-			if (product.length != 0) {
-				res.send(product);
-			} else {
-				res.send([]);
-			}
+			res.send(product);
 		})
+		// const id = req.params.id;
+		// // Promise.all([
+		// // 	Category.findOne({ _id: id }),
+		// // 	Product.find({ category: id })
+		// // ]).then(values => {
+		// // 	res.send({
+		// // 		category: values[0],
+		// // 		products: values[1]
+		// // 	});
+		// // });
+
 		.catch(err => {
 			res.send(err);
 		});
 });
-router.get("/:id", (req, res) => {
-	const id = req.params.id;
+router.post("/", upload.single("imageUrl"), (req, res) => {
+	const dest = req.file.destination;
+	const imagePath = "http://localhost:3001" + dest.slice(1) + req.file.filename;
+	const product = new Product({
+		name: req.body.name,
+		description: req.body.description,
+		price: req.body.price,
+		stock: req.body.stock,
+		isCod: req.body.isCod,
+		category: req.body.category,
+		imageUrl: imagePath
+	});
 
-	Product.findOne({ _id: id })
+	product
+		.save()
 		.then(product => {
 			res.send(product);
 		})
@@ -58,34 +97,6 @@ router.get("/:id", (req, res) => {
 			res.send(err);
 		});
 });
-router.post(
-	"/",
-
-	upload.single("imageUrl"),
-	(req, res) => {
-		const dest = req.file.destination;
-		const imagePath =
-			"http://localhost:3001" + dest.slice(1) + req.file.filename;
-
-		const product = new Product({
-			name: req.body.name,
-			description: req.body.description,
-			price: req.body.price,
-			stock: req.body.stock,
-			category: req.body.category,
-			imageUrl: imagePath
-		});
-
-		product
-			.save()
-			.then(product => {
-				res.send(product);
-			})
-			.catch(err => {
-				res.send(err);
-			});
-	}
-);
 
 router.put("/:id", (req, res) => {
 	Product.findOneAndUpdate(
@@ -106,7 +117,7 @@ router.put("/:id", (req, res) => {
 			res.send(err);
 		});
 });
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id", (req, res) => {
 	Product.findOneAndDelete({ _id: req.params.id })
 		.then(product => {
 			res.send(product);
@@ -114,7 +125,6 @@ router.delete("/:id", (req, res, next) => {
 		.catch(err => {
 			res.send(err);
 		});
-	next();
 });
 
 module.exports = {

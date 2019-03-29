@@ -19,7 +19,8 @@ const productSchema = new Schema({
 	},
 	stock: {
 		type: Number,
-		minlengthl: 0
+		minlengthl: 0,
+		required: true
 	},
 	isCod: {
 		type: Boolean,
@@ -36,8 +37,8 @@ const productSchema = new Schema({
 		required: true
 	},
 	imageUrl: {
-		type: String,
-		required: true
+		type: String
+		// required: true
 	}
 });
 const Product = mongoose.model("Product", productSchema);
