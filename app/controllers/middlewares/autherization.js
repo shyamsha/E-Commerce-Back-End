@@ -1,15 +1,15 @@
 const { authenticationByUser } = require("../middlewares/authenticate");
 function autherizationByUser(req, res, next) {
 	if (authenticationByUser) {
-		console.log(req.user.role);
+		console.log(req.user);
 		req.user.role.map(role => {
-			if (req.user[0] === "admin") {
+			if (role === "admin") {
 				next();
-			} else if (req.user.role[0] === "user") {
+			} else if (role === "user") {
 				// CRUD - Create - POST , Read - GET , Update - PUT , Destroy - DELETE
 				// Products
-				if (req.url == "/products") {
-					if (req.method == "GET") {
+				if (req.url == "/carts") {
+					if (req.method == "POST") {
 						next();
 					} else {
 						res.status(403).send({

@@ -32,7 +32,7 @@ router.post("/login", (req, res) => {
 			res.send(err);
 		});
 });
-router.delete("/logout", (req, res) => {
+router.delete("/logout",authenticationByUser ,(req, res) => {
 	const tokenData = req.token;
 	User.findOneAndUpdate(
 		{ _id: req.user._id },
@@ -47,7 +47,7 @@ router.delete("/logout", (req, res) => {
 			res.send(err);
 		});
 });
-router.delete("/logoutall", (req, res) => {
+router.delete("/logoutall", authenticationByUser,(req, res) => {
 	let token = req.token;
 	User.findOneAndUpdate(
 		{ _id: req.user._id },
@@ -68,7 +68,7 @@ router.delete("/logoutall", (req, res) => {
 			res.send(err);
 		});
 });
-router.get("/", (req, res) => {
+router.get("/", authenticationByUser,(req, res) => {
 	User.find()
 		.then(user => {
 			res.send(user);

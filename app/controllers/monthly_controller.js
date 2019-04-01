@@ -17,6 +17,15 @@ router.get("/", (req, res) => {
 			res.send(err);
 		});
 });
+router.get("/:id", (req, res) => {
+	Monthly.findOne(req.params.id)
+		.then(monthly => {
+			res.send(monthly);
+		})
+		.catch(err => {
+			res.send(err);
+		});
+});
 router.post("/", (req, res) => {
 	const id = req.params.id;
 	const monthly = new Monthly(req.body);
