@@ -3,12 +3,12 @@ const multer = require("multer");
 //var upload = multer({ dest: "uploads/" }); //anthor way to upload
 const router = express.Router();
 const path = require("path");
-const { Product } = require("../models/products");
+const { Product } = require("../models/product");
 const { autherizationByUser } = require("./middlewares/autherization");
 const {
 	authenticationByUser
 } = require("../controllers/middlewares/authenticate");
-const { Category } = require("../models/categorys");
+const { Category } = require("../models/category");
 var storage = multer.diskStorage({
 	destination: function(req, file, callback) {
 		//with out function callback use directely destination:"./public/uploads/"

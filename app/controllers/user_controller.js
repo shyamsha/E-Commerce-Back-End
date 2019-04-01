@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { authenticationByUser } = require("./middlewares/authenticate");
-const { User } = require("../models/users");
+const { User } = require("../models/user");
 
 router.post("/register", (req, res) => {
 	const user = new User(req.body);
@@ -32,7 +32,7 @@ router.post("/login", (req, res) => {
 			res.send(err);
 		});
 });
-router.delete("/logout",authenticationByUser ,(req, res) => {
+router.delete("/logout", authenticationByUser, (req, res) => {
 	const tokenData = req.token;
 	User.findOneAndUpdate(
 		{ _id: req.user._id },
@@ -47,7 +47,7 @@ router.delete("/logout",authenticationByUser ,(req, res) => {
 			res.send(err);
 		});
 });
-router.delete("/logoutall", authenticationByUser,(req, res) => {
+router.delete("/logoutall", authenticationByUser, (req, res) => {
 	let token = req.token;
 	User.findOneAndUpdate(
 		{ _id: req.user._id },
@@ -68,7 +68,7 @@ router.delete("/logoutall", authenticationByUser,(req, res) => {
 			res.send(err);
 		});
 });
-router.get("/", authenticationByUser,(req, res) => {
+router.get("/", authenticationByUser, (req, res) => {
 	User.find()
 		.then(user => {
 			res.send(user);

@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { cartSchema } = require("./carts");
-const { monthlyCartSchema } = require("./monthlycarts");
+const { cartSchema } = require("./cart");
+const { monthlyCartSchema } = require("./monthlycart");
 const { Schema } = mongoose;
 userSchema = new Schema({
 	username: {

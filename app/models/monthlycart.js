@@ -1,18 +1,16 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const monthlyCartSchema = new Schema({
-	products: [
-		{
-			type: Schema.Types.ObjectId,
-			ref: "Product",
-			required: true
-		}
-	],
+	products: {
+		type: Schema.Types.ObjectId,
+		ref: "Product"
+		// required: true
+	},
 	quantity: {
 		type: Number,
 		min: 1,
-		max: 50,
-		required: true
+		max: 50
+		// required: true
 	}
 });
 const Monthly = mongoose.model("Monthly", monthlyCartSchema);

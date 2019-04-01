@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { Category } = require("../models/categorys");
+const { Category } = require("../models/category");
 const { authenticationByUser } = require("./middlewares/authenticate");
 const { autherizationByUser } = require("./middlewares/autherization");
-const { Product } = require("../models/products");
+const { Product } = require("../models/product");
 
 router.get("/", (req, res) => {
 	Category.find()

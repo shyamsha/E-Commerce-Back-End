@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { Monthly } = require("../models/monthlycarts");
-const { Product } = require("../models/products");
+const { Monthly } = require("../models/monthlycart");
+const { Product } = require("../models/product");
 const { authenticationByUser } = require("./middlewares/authenticate");
 
 router.get("/", (req, res) => {

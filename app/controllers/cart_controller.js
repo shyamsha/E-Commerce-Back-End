@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Cart } = require("../models/carts");
+const { Cart } = require("../models/cart");
 const { authenticationByUser } = require("./middlewares/authenticate");
 const { autherizationByUser } = require("./middlewares/autherization");
 
@@ -25,7 +25,7 @@ router.get("/:id", authenticationByUser, (req, res) => {
 	const user = req.user.cart;
 	const userId = req.user._id;
 
-	user.map(id => {
+	user.forEach(id => {
 		if (id._id == cartId) {
 			res.send(id);
 		}
