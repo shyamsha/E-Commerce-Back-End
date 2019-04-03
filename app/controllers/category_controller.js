@@ -32,7 +32,7 @@ router.get("/:id", (req, res, next) => {
 	});
 });
 
-router.post("/", (req, res) => {
+router.post("/", authenticationByUser, autherizationByUser, (req, res) => {
 	const category = new Category(req.body);
 	category
 		.save()
@@ -43,7 +43,7 @@ router.post("/", (req, res) => {
 			res.send(err);
 		});
 });
-router.put("/:id", (req, res) => {
+router.put("/:id", authenticationByUser, autherizationByUser, (req, res) => {
 	Category.findOneAndUpdate(
 		{
 			_id: req.params.id
@@ -62,7 +62,7 @@ router.put("/:id", (req, res) => {
 			res.send(err);
 		});
 });
-router.delete("/:id", (req, res) => {
+router.delete("/:id", authenticationByUser, autherizationByUser, (req, res) => {
 	Category.findOneAndDelete({ _id: req.params.id })
 		.then(category => {
 			res.send(category);

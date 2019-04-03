@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { authenticationByUser } = require("./middlewares/authenticate");
+const { autherizationByUser } = require("./middlewares/autherization");
 const { User } = require("../models/user");
 
 router.post("/register", (req, res) => {
@@ -40,7 +41,7 @@ router.delete("/logout", authenticationByUser, (req, res) => {
 	)
 		.then(user => {
 			user.save().then(user => {
-				res.send("suceessfully logout");
+				res.send({ statusText: "suceessfully logout" });
 			});
 		})
 		.catch(err => {
@@ -49,27 +50,20 @@ router.delete("/logout", authenticationByUser, (req, res) => {
 });
 router.delete("/logoutall", authenticationByUser, (req, res) => {
 	let token = req.token;
-	User.findOneAndUpdate(
-		{ _id: req.user._id },
-		//{ $pull: { tokens: { token: token } } },
-		{ $set: { tokens: [] } }
-	)
+	User.findOneAndUpdate({ _id: req.user._id }, { $set: { tokens: [] } })
 		.then(user => {
-			// 	for (let i = 0; i < user.tokens.length; i++) {
-			// 		if (token == user.tokens[i].token) {
-			// 			user.tokens.splice(0);
-			// 		}
-			// 	}
 			user.save().then(user => {
-				res.send("suceessfully logout from all devices");
+				res.send({ statusText: "suceessfully logout from all devices" });
 			});
 		})
 		.catch(err => {
 			res.send(err);
 		});
 });
-router.get("/", authenticationByUser, (req, res) => {
+router.get("/", (req, res) => {
 	User.find()
+		.select("cart")
+		.populate()
 		.then(user => {
 			res.send(user);
 		})

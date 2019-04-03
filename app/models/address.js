@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const validator = require("validator");
 const addressSchema = new Schema({
-	fullName: {
+	fullname: {
 		type: String,
 		required: true
 	},

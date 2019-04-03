@@ -6,6 +6,7 @@ const { check } = require("express-validator/check");
 const { sanitize } = require("express-validator/filter");
 router.get("/", (req, res) => {
 	Address.find()
+		.populate("user")
 		.then(address => {
 			if (address.length != 0) {
 				res.send(address);
