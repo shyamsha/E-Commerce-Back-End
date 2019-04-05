@@ -4,6 +4,7 @@ const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { cartSchema } = require("./cart");
 const { monthlyCartSchema } = require("./monthlycart");
+const { addressSchema } = require("./address");
 const { Schema } = mongoose;
 userSchema = new Schema({
 	username: {
@@ -51,11 +52,7 @@ userSchema = new Schema({
 	},
 	cart: [cartSchema],
 	monthlyCart: [monthlyCartSchema],
-	address: {
-		type: Schema.Types.ObjectId,
-		ref: "Address",
-		required: true
-	}
+	address: [addressSchema]
 });
 //generate password encrprition hide the original password
 userSchema.pre("save", function(next) {

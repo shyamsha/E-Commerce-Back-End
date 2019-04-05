@@ -8,14 +8,6 @@ const { autherizationByUser } = require("./middlewares/autherization");
 router.get("/", authenticationByUser, (req, res) => {
 	const user = req.user;
 
-	//res.send(user.cart);
-	// user.cart = user.cart.forEach(product => {
-	// 	return product.populate("product");
-	// });
-	// user.save().then(user => {
-	// 	res.send(user);
-	// });
-
 	User.findOne(user._id)
 		.select("cart")
 		.populate("cart.product")

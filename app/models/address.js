@@ -47,14 +47,15 @@ const addressSchema = new Schema({
 				return "invalid postalCode format";
 			}
 		}
-	},
-	user: {
-		type: Schema.Types.ObjectId,
-		ref: "User",
-		required: true
 	}
+	// user: {
+	// 	type: Schema.Types.ObjectId,
+	// 	ref: "User",
+	// 	required: true
+	// }
 });
 const Address = mongoose.model("Address", addressSchema);
 module.exports = {
+	addressSchema,
 	Address
 };
