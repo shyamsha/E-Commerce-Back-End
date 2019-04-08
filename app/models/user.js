@@ -52,7 +52,11 @@ userSchema = new Schema({
 	},
 	cart: [cartSchema],
 	monthlyCart: [monthlyCartSchema],
-	address: [addressSchema]
+	address: [addressSchema],
+	review: {
+		type: Schema.Types.ObjectId,
+		ref: "Review"
+	}
 });
 //generate password encrprition hide the original password
 userSchema.pre("save", function(next) {

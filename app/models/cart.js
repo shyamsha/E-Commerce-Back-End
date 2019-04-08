@@ -4,13 +4,11 @@ const cartSchema = new Schema({
 	product: {
 		type: Schema.Types.ObjectId,
 		ref: "Product"
-		//required: true
 	},
 	quantity: {
 		type: Number,
 		min: 1,
 		max: 50
-		// required: true
 	}
 });
 

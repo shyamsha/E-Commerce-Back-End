@@ -21,7 +21,7 @@ router.get("/", authenticationByUser, (req, res) => {
 router.get("/:id", authenticationByUser, (req, res) => {
 	const addressId = req.params.id;
 	const address = req.user.address;
-	console.log(req.user);
+
 	address.forEach(addressItem => {
 		if (addressItem._id == addressId) {
 			res.send(addressItem);
@@ -36,7 +36,7 @@ router.post("/", authenticationByUser, (req, res) => {
 	user
 		.save()
 		.then(user => {
-			res.send(user.address);
+			res.send({ statusText: "Added Address succefuuly" });
 		})
 		.catch(err => {
 			res.send(err);
@@ -61,7 +61,7 @@ router.put("/:id", authenticationByUser, (req, res) => {
 	user
 		.save()
 		.then(user => {
-			res.send(user.address);
+			res.send({ statusText: "Updated Address succefuuly" });
 		})
 		.catch(err => {
 			res.send(err);

@@ -5,11 +5,12 @@ const reviewSchema = new Schema({
 	title: {
 		type: String,
 		required: true,
-		maxlength: 50
+		maxlength: 30
 	},
 	body: {
 		type: String,
 		required: true,
+		minlength: 16,
 		maxlength: 2024
 	},
 	rating: {
@@ -28,8 +29,7 @@ const reviewSchema = new Schema({
 	},
 	product: {
 		type: Schema.Types.ObjectId,
-		ref: "Product",
-		required: true
+		ref: "Product"
 	}
 });
 const Review = mongoose.model("Review", reviewSchema);

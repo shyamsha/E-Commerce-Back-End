@@ -7,7 +7,6 @@ const { autherizationByUser } = require("./middlewares/autherization");
 
 router.get("/", authenticationByUser, (req, res) => {
 	const user = req.user;
-
 	User.findOne(user._id)
 		.select("cart")
 		.populate("cart.product")
@@ -18,8 +17,6 @@ router.get("/", authenticationByUser, (req, res) => {
 router.get("/:id", authenticationByUser, (req, res) => {
 	const cartId = req.params.id;
 	const cart = req.user.cart;
-	const userId = req.user._id;
-
 	cart.forEach(cartItem => {
 		if (cartItem._id == cartId) {
 			res.send(cartItem);
@@ -30,7 +27,6 @@ router.post("/", authenticationByUser, (req, res) => {
 	const body = req.body;
 	const user = req.user;
 	const cart = new Cart(body);
-
 	let product = false;
 	user.cart.map(productId => {
 		if (productId.product == body.product) {
@@ -58,7 +54,6 @@ router.put("/:id", authenticationByUser, (req, res) => {
 	const user = req.user;
 	const body = req.body;
 	const id = req.params.id;
-
 	user.cart.forEach(cart => {
 		if (cart._id == id) {
 			cart.quantity = body.quantity;
@@ -68,28 +63,11 @@ router.put("/:id", authenticationByUser, (req, res) => {
 	user
 		.save()
 		.then(user => {
-			res.send(user);
+			res.send({ statusText: "succefuuly Updated" });
 		})
 		.catch(err => {
 			res.send(err);
 		});
-
-	// user
-	// 	.update(
-	// 		{ _id: id },
-	// 		{
-	// 			$set: { "cart.$.qunatity": body }
-	// 		},
-	// 		{
-	// 			new: true
-	// 		}
-	// 	)
-	// 	.then(cart => {
-	// 		res.send(cart);
-	// 	})
-	// 	.catch(err => {
-	// 		res.send(err);
-	// 	});
 });
 router.delete("/:id", authenticationByUser, (req, res) => {
 	const user = req.user;
