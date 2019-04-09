@@ -9,7 +9,7 @@ const orderSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	orderaNumber: {
+	orderNumber: {
 		type: String,
 		required: true
 	},
@@ -17,7 +17,14 @@ const orderSchema = new Schema({
 		type: Number,
 		required: true
 	},
-	lineItems: []
+	lineItems: [
+		{
+			cart: {
+				type: Schema.Types.ObjectId,
+				ref: "Cart"
+			}
+		}
+	]
 });
 const Order = mongoose.model("Order", orderSchema);
 module.exports = {

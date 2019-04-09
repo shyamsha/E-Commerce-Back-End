@@ -75,49 +75,70 @@ router.get("/:id", (req, res) => {
 			res.send(err);
 		});
 });
-router.post("/", upload.single("imageUrl"), (req, res) => {
-	const dest = req.file.destination;
-	const imagePath = "http://localhost:3001" + dest.slice(1) + req.file.filename;
-	const product = new Product({
-		name: req.body.name,
-		description: req.body.description,
-		price: req.body.price,
-		stock: req.body.stock,
-		isCod: req.body.isCod,
-		category: req.body.category,
-		imageUrl: imagePath
-	});
-
-	product
-		.save()
-		.then(product => {
-			res.send(product);
-		})
-		.catch(err => {
-			res.send(err);
+router.post(
+	"/",
+	authenticationByUser,
+	upload.single("imageUrl"),
+	(req, res) => {
+		const dest = req.file.destination;
+		const imagePath =
+			"http://localhost:3001" + dest.slice(1) + req.file.filename;
+		const product = new Product({
+			name: req.body.name,
+			description: req.body.description,
+			price: req.body.price,
+			stock: req.body.stock,
+			isCod: req.body.isCod,
+			category: req.body.category,
+			imageUrl: imagePath
 		});
-});
 
-router.put("/:id", (req, res) => {
-	Product.findOneAndUpdate(
-		{
-			_id: req.params.id
-		},
-		{
-			$set: req.body
-		},
-		{
-			new: true
-		}
-	)
-		.then(product => {
-			res.send(product);
-		})
-		.catch(err => {
-			res.send(err);
-		});
-});
-router.delete("/:id", (req, res) => {
+		product
+			.save()
+			.then(product => {
+				res.send(product);
+			})
+			.catch(err => {
+				res.send(err);
+			});
+	}
+);
+
+router.put(
+	"/:id",
+	authenticationByUser,
+	upload.single("imageUrl"),
+	(req, res) => {
+		const image = req.file.imageUrl;
+		const body = req.body;
+		Product.findOneAndUpdate(
+			{
+				_id: req.params.id
+			},
+			{
+				$set: {
+					name: req.body.name,
+					description: req.body.description,
+					price: req.body.price,
+					stock: req.body.stock,
+					isCod: req.body.isCod,
+					category: req.body.category,
+					image
+				}
+			},
+			{
+				new: true
+			}
+		)
+			.then(product => {
+				res.send(product);
+			})
+			.catch(err => {
+				res.send(err);
+			});
+	}
+);
+router.delete("/:id", authenticationByUser, (req, res) => {
 	Product.findOneAndDelete({ _id: req.params.id })
 		.then(product => {
 			res.send(product);

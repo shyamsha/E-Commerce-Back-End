@@ -56,6 +56,10 @@ userSchema = new Schema({
 	review: {
 		type: Schema.Types.ObjectId,
 		ref: "Review"
+	},
+	order: {
+		type: Schema.Types.ObjectId,
+		ref: "Order"
 	}
 });
 //generate password encrprition hide the original password

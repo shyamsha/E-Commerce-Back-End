@@ -63,7 +63,7 @@ router.put("/:id", authenticationByUser, (req, res) => {
 	user
 		.save()
 		.then(user => {
-			res.send({ statusText: "succefuuly Updated" });
+			res.send({ statusText: "succefully Updated" });
 		})
 		.catch(err => {
 			res.send(err);
