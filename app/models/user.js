@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const { cartSchema } = require("./cart");
 const { monthlyCartSchema } = require("./monthlycart");
 const { addressSchema } = require("./address");
+const { orderSchema } = require("./order");
 const { Schema } = mongoose;
 userSchema = new Schema({
 	username: {
@@ -57,10 +58,7 @@ userSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: "Review"
 	},
-	order: {
-		type: Schema.Types.ObjectId,
-		ref: "Order"
-	}
+	order: [orderSchema]
 });
 //generate password encrprition hide the original password
 userSchema.pre("save", function(next) {

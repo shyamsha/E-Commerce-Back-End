@@ -1,19 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const { Order } = require("../models/order");
+const { User } = require("../models/user");
 const { authenticationByUser } = require("./middlewares/authenticate");
 router.get("/", authenticationByUser, (req, res) => {
 	const user = req.user;
-	Order.find(user._id)
+	User.find(user._id)
+		.populate("order.lineItems.product")
+		.select("order")
 		.then(order => {
-			if (order.length != 0) {
-				res.send(order);
-			} else {
-				res.send([]);
-			}
-		})
-		.catch(err => {
-			res.send(err);
+			res.send(order);
 		});
 });
 router.get("/:id", authenticationByUser, (req, res) => {
@@ -32,25 +28,30 @@ router.get("/:id", authenticationByUser, (req, res) => {
 });
 router.post("/", authenticationByUser, (req, res) => {
 	let user = req.user;
-	console.log(user.populate("cart.product"));
 	let body = req.body;
-	cart = user.cart.forEach(cart => {
-		//console.log(cart);
-	});
-	const orderPlaced = {
-		user: user._id,
-		orderNumber: "DCT-1",
-		totalOrders: user.cart.length,
-		lineItems: user.cart,
-		date: Date.now
-	};
-	console.log(orderPlaced);
-	const order = new Order({ id: user._id, user: orderPlaced });
 
-	order
+	body.user = user._id;
+	body.orderNumber = "DCT";
+	body.totalOrders = user.cart.length;
+	body.lineItems = [];
+	user.cart.forEach(cart => {
+		body.lineItems.push({ product: cart.product, quantity: cart.quantity });
+	});
+
+	const order = new Order(body, user._id);
+
+	if (user.cart.length != 0) {
+		user.order.push(order);
+		user.cart = [];
+	} else {
+		res.send({ statusText: "Please add products to cart" });
+	}
+
+	user
 		.save()
+		.select("order")
 		.then(order => {
-			console.log(order);
+			res.send(order);
 		})
 		.catch(err => {
 			res.send(err);

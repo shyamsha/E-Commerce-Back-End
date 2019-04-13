@@ -19,14 +19,19 @@ const orderSchema = new Schema({
 	},
 	lineItems: [
 		{
-			cart: {
+			product: {
 				type: Schema.Types.ObjectId,
-				ref: "Cart"
+				ref: "Product"
+			},
+			quantity: {
+				type: Number
 			}
 		}
 	]
+	// lineItems: []
 });
 const Order = mongoose.model("Order", orderSchema);
 module.exports = {
+	orderSchema,
 	Order
 };
