@@ -102,7 +102,8 @@ userSchema.statics.findByCredentials = function(email, password) {
 userSchema.methods.generateByToken = function() {
 	user = this; //reffering the user object in side User model
 	const userid = {
-		user_id: user._id
+		user_id: user._id,
+		user_role: user.role
 	};
 
 	const token = jwt.sign(userid, "9849084994");

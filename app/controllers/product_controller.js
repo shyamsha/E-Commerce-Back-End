@@ -83,15 +83,18 @@ router.post(
 		const dest = req.file.destination;
 		const imagePath =
 			"http://localhost:3001" + dest.slice(1) + req.file.filename;
-		const product = new Product({
-			name: req.body.name,
-			description: req.body.description,
-			price: req.body.price,
-			stock: req.body.stock,
-			isCod: req.body.isCod,
-			category: req.body.category,
-			imageUrl: imagePath
-		});
+		const product = new Product(
+			{
+				name: req.body.name,
+				description: req.body.description,
+				price: req.body.price,
+				stock: req.body.stock,
+				isCod: req.body.isCod,
+				category: req.body.category,
+				imageUrl: imagePath
+			},
+			{ userId: user._id }
+		);
 
 		product
 			.save()
@@ -113,7 +116,8 @@ router.put(
 		const body = req.body;
 		Product.findOneAndUpdate(
 			{
-				_id: req.params.id
+				_id: req.params.id,
+				userId: user._id
 			},
 			{
 				$set: {
@@ -139,7 +143,7 @@ router.put(
 	}
 );
 router.delete("/:id", authenticationByUser, (req, res) => {
-	Product.findOneAndDelete({ _id: req.params.id })
+	Product.findOneAndDelete({ _id: req.params.id, userId: user._id })
 		.then(product => {
 			res.send(product);
 		})

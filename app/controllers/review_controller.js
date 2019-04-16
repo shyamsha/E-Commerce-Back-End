@@ -45,15 +45,15 @@ router.put("/:id", authenticationByUser, (req, res) => {
 	const user = req.user;
 	Review.findOneAndUpdate(
 		{
-			_id: req.params.id
+			_id: req.params.id,
+			userId: user._id
 		},
 		{
 			$set: req.body
 		},
 		{
 			new: true
-		},
-		user._id
+		}
 	)
 		.then(review => {
 			res.send(review);
@@ -64,7 +64,7 @@ router.put("/:id", authenticationByUser, (req, res) => {
 });
 router.delete("/:id", authenticationByUser, (req, res) => {
 	const user = req.user;
-	Review.findOneAndDelete({ _id: req.params.id }, user._id)
+	Review.findOneAndDelete({ _id: req.params.id, userId: user._id })
 		.then(review => {
 			res.send(review);
 		})

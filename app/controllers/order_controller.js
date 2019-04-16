@@ -49,9 +49,9 @@ router.post("/", authenticationByUser, (req, res) => {
 
 	user
 		.save()
-		.select("order")
+		// .select("order")
 		.then(order => {
-			res.send(order);
+			res.send({ statusText: "Thank you for Buying we will happy to you" });
 		})
 		.catch(err => {
 			res.send(err);

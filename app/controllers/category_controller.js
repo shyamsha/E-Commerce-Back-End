@@ -33,7 +33,7 @@ router.get("/:id", (req, res, next) => {
 });
 
 router.post("/", authenticationByUser, (req, res) => {
-	const category = new Category(req.body);
+	const category = new Category(req.body, req.user._id);
 	category
 		.save()
 		.then(category => {
@@ -46,7 +46,8 @@ router.post("/", authenticationByUser, (req, res) => {
 router.put("/:id", authenticationByUser, (req, res) => {
 	Category.findOneAndUpdate(
 		{
-			_id: req.params.id
+			_id: req.params.id,
+			userId: req.user._id
 		},
 		{
 			$set: req.body
@@ -63,7 +64,7 @@ router.put("/:id", authenticationByUser, (req, res) => {
 		});
 });
 router.delete("/:id", authenticationByUser, (req, res) => {
-	Category.findOneAndDelete({ _id: req.params.id })
+	Category.findOneAndDelete({ _id: req.params.id, userId: req.user._id })
 		.then(category => {
 			res.send(category);
 		})
