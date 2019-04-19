@@ -6,6 +6,7 @@ const {
 } = require("../controllers/middlewares/authenticate");
 router.get("/", (req, res) => {
 	Review.find()
+		.populate("user")
 		.then(review => {
 			if (review.length != 0) {
 				res.send(review);

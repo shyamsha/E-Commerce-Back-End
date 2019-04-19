@@ -40,7 +40,7 @@ router.post("/", authenticationByUser, (req, res) => {
 		user
 			.save()
 			.then(user => {
-				res.send({ statusText: "Added Sucessfully", cart });
+				res.send({ statusText: "Added Sucessfully" });
 			})
 			.catch(err => {
 				res.status(403).send({

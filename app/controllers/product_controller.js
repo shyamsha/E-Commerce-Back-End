@@ -83,6 +83,7 @@ router.post(
 		const dest = req.file.destination;
 		const imagePath =
 			"http://localhost:3001" + dest.slice(1) + req.file.filename;
+		const user = req.user;
 		const product = new Product(
 			{
 				name: req.body.name,
@@ -93,7 +94,7 @@ router.post(
 				category: req.body.category,
 				imageUrl: imagePath
 			},
-			{ userId: user._id }
+			{ _id: user._id }
 		);
 
 		product
@@ -102,7 +103,7 @@ router.post(
 				res.send(product);
 			})
 			.catch(err => {
-				res.send(err);
+				res.status(500).send({ statusText: "internal server error" });
 			});
 	}
 );
@@ -113,11 +114,12 @@ router.put(
 	upload.single("imageUrl"),
 	(req, res) => {
 		const image = req.file.imageUrl;
-		const body = req.body;
+
+		const user = req.user;
 		Product.findOneAndUpdate(
+			// { userId: user._id },
 			{
-				_id: req.params.id,
-				userId: user._id
+				_id: req.params.id
 			},
 			{
 				$set: {
@@ -138,17 +140,18 @@ router.put(
 				res.send(product);
 			})
 			.catch(err => {
-				res.send(err);
+				res.status(500).send({ statusText: "internal server error" });
 			});
 	}
 );
 router.delete("/:id", authenticationByUser, (req, res) => {
-	Product.findOneAndDelete({ _id: req.params.id, userId: user._id })
+	const user = req.user;
+	Product.findOneAndDelete({ _id: req.params.id }, user._id)
 		.then(product => {
 			res.send(product);
 		})
 		.catch(err => {
-			res.send(err);
+			res.status(500).send({ statusText: "internal server error" });
 		});
 });
 

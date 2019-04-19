@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const monthlyCartSchema = new Schema({
-	products: {
+	product: {
 		type: Schema.Types.ObjectId,
 		ref: "Product"
 		// required: true
