@@ -67,7 +67,6 @@ router.post("/", authenticationByUser, (req, res) => {
 					res.send(err);
 				});
 		});
-
 });
 module.exports = {
 	orderController: router
