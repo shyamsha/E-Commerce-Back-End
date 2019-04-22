@@ -60,9 +60,10 @@ router.delete("/logoutall", authenticationByUser, (req, res) => {
 			res.send(err);
 		});
 });
-router.get("/:id", (req, res) => {
+router.get("/", (req, res) => {
 	const id = req.params.id;
-	User.findOne({ _id: id })
+	User.find()
+		.select("order")
 		.then(user => {
 			res.send(user);
 		})

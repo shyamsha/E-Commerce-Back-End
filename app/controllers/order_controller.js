@@ -30,55 +30,44 @@ router.post("/", authenticationByUser, (req, res) => {
 	let user = req.user;
 	let body = req.body;
 	let id = (req.params = user._id);
-	let price = [];
+
 	body.user = user._id;
-	body.orderNumber = "DCT-9849" + user._id;
+	body.orderNumber = "DCT-9849 " + user._id + Math.random() * 10000;
 	body.totalOrders = user.cart.length;
 	body.lineItems = [];
-	const product = [];
+
 	User.findOne({ _id: id })
 		.select("cart")
 		.populate("cart.product")
 		.then(r => {
 			r.cart.forEach(product => {
-				product.push({
+				body.lineItems.push({
 					product: product.product._id,
 					quantity: product.quantity,
 					price: product.product.price
 				});
-				// body.lineItems.push({
-				// 	product: product.product._id,
-				// 	quantity: product.quantity,
-				// 	price: product.product.price
-				// });
 			});
+			const order = new Order(body, user._id);
+
+			if (r.cart.length != 0) {
+				user.order.push(order);
+				user.cart = [];
+			} else {
+				res.send({ statusText: "Please add products to cart" });
+			}
+
+			user
+				.save()
+				.then(order => {
+					res.send({
+						statusText: "Thank you for Buying we will happy to help you"
+					});
+				})
+				.catch(err => {
+					res.send(err);
+				});
 		});
-	console.log(product);
-	// user.cart.forEach(cart => {
 
-	// 	body.lineItems.push({ product: cart.product, quantity: cart.quantity });
-	// });
-
-	// const order = new Order(body, user._id);
-
-	// if (user.cart.length != 0) {
-	// 	user.order.push(order);
-	// 	user.cart = [];
-	// } else {
-	// 	res.send({ statusText: "Please add products to cart" });
-	// }
-
-	// user
-	// 	.save()
-	// 	.then(order => {
-	// 		res.send({
-	// 			statusText: "Thank you for Buying we will happy to help you",
-	// 			order
-	// 		});
-	// 	})
-	// 	.catch(err => {
-	// 		res.send(err);
-	// 	});
 });
 module.exports = {
 	orderController: router
