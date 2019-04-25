@@ -4,7 +4,9 @@ const multer = require("multer");
 const router = express.Router();
 const path = require("path");
 const { Product } = require("../models/product");
-const { autherizationByUser } = require("./middlewares/autherization");
+const {
+	autherizationByUser
+} = require("../controllers/middlewares/autherization");
 const {
 	authenticationByUser
 } = require("../controllers/middlewares/authenticate");
@@ -42,17 +44,6 @@ router.get("/", (req, res) => {
 		.then(products => {
 			res.send(products);
 		});
-	// Product.find()
-	// 	.then(product => {
-	// 		if (product.length != 0) {
-	// 			res.send(product);
-	// 		} else {
-	// 			res.send([]);
-	// 		}
-	// 	})
-	// 	.catch(err => {
-	// 		res.send(err);
-	// 	});
 });
 router.get("/:id", (req, res) => {
 	Product.findById(req.params.id)
@@ -60,16 +51,6 @@ router.get("/:id", (req, res) => {
 		.then(product => {
 			res.send(product);
 		})
-		// const id = req.params.id;
-		// // Promise.all([
-		// // 	Category.findOne({ _id: id }),
-		// // 	Product.find({ category: id })
-		// // ]).then(values => {
-		// // 	res.send({
-		// // 		category: values[0],
-		// // 		products: values[1]
-		// // 	});
-		// // });
 
 		.catch(err => {
 			res.send(err);
@@ -78,6 +59,7 @@ router.get("/:id", (req, res) => {
 router.post(
 	"/",
 	authenticationByUser,
+	autherizationByUser,
 	upload.single("imageUrl"),
 	(req, res) => {
 		const dest = req.file.destination;
@@ -94,7 +76,7 @@ router.post(
 				category: req.body.category,
 				imageUrl: imagePath
 			},
-			{ _id: user._id }
+			req.user._id
 		);
 
 		product
@@ -110,17 +92,16 @@ router.post(
 
 router.put(
 	"/:id",
-	authenticationByUser,
 	upload.single("imageUrl"),
+	authenticationByUser,
+	autherizationByUser,
 	(req, res) => {
-		const image = req.file.imageUrl;
-
-		const user = req.user;
+		const dest = req.file.destination;
+		const imagePath =
+			"http://localhost:3001" + dest.slice(1) + req.file.filename;
+		const user = req.user._id;
 		Product.findOneAndUpdate(
-			// { userId: user._id },
-			{
-				_id: req.params.id
-			},
+			{ _id: req.params.id },
 			{
 				$set: {
 					name: req.body.name,
@@ -129,12 +110,13 @@ router.put(
 					stock: req.body.stock,
 					isCod: req.body.isCod,
 					category: req.body.category,
-					image
+					imageUrl: imagePath
 				}
 			},
 			{
 				new: true
 			}
+			// req.user._id
 		)
 			.then(product => {
 				res.send(product);
@@ -144,9 +126,9 @@ router.put(
 			});
 	}
 );
-router.delete("/:id", authenticationByUser, (req, res) => {
+router.delete("/:id", authenticationByUser, autherizationByUser, (req, res) => {
 	const user = req.user;
-	Product.findOneAndDelete({ _id: req.params.id }, user._id)
+	Product.findOneAndDelete({ _id: req.params.id }, req.user._id)
 		.then(product => {
 			res.send(product);
 		})

@@ -17,7 +17,7 @@ router.get("/:id", authenticationByUser, (req, res) => {
 	const user = req.user;
 	Order.findOne({
 		_id: id,
-		id: user._id
+		userId: user._id
 	})
 		.then(order => {
 			res.send(order);
@@ -32,7 +32,7 @@ router.post("/", authenticationByUser, (req, res) => {
 	let id = (req.params = user._id);
 
 	body.user = user._id;
-	body.orderNumber = "DCT-9849 " + user._id + Math.random() * 10000;
+	body.orderNumber = "DCT-" + user._id + Math.round(Math.random() * 1000000);
 	body.totalOrders = user.cart.length;
 	body.lineItems = [];
 
@@ -47,7 +47,7 @@ router.post("/", authenticationByUser, (req, res) => {
 					price: product.product.price
 				});
 			});
-			const order = new Order(body, user._id);
+			const order = new Order({ body: body, userId: user._id });
 
 			if (r.cart.length != 0) {
 				user.order.push(order);
