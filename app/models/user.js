@@ -51,13 +51,14 @@ userSchema = new Schema({
 		type: [String],
 		default: ["user"]
 	},
-	cart: [cartSchema],
-	monthlyCart: [monthlyCartSchema],
-	address: [addressSchema],
 	review: {
 		type: Schema.Types.ObjectId,
 		ref: "Review"
 	},
+	cart: [cartSchema],
+	monthlyCart: [monthlyCartSchema],
+	address: [addressSchema],
+
 	order: [orderSchema]
 });
 //generate password encrprition hide the original password

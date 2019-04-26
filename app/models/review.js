@@ -5,6 +5,7 @@ const reviewSchema = new Schema({
 	title: {
 		type: String,
 		required: true,
+		minlength: 3,
 		maxlength: 30
 	},
 	body: {
