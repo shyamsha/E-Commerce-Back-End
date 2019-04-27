@@ -47,7 +47,7 @@ router.post("/", authenticationByUser, (req, res) => {
 					price: product.product.price
 				});
 			});
-			const order = new Order({ body: body, userId: user._id });
+			const order = new Order(body, user._id);
 
 			if (r.cart.length != 0) {
 				user.order.push(order);

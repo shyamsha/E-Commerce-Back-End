@@ -34,6 +34,7 @@ router.get("/:id", (req, res, next) => {
 
 router.post("/", authenticationByUser, autherizationByUser, (req, res) => {
 	const category = new Category(req.body, req.user._id);
+	// category.user= req.user._id
 	category
 		.save()
 		.then(category => {

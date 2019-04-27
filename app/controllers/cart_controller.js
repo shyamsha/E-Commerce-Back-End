@@ -26,7 +26,7 @@ router.get("/:id", authenticationByUser, (req, res) => {
 router.post("/", authenticationByUser, (req, res) => {
 	const body = req.body;
 	const user = req.user;
-	const cart = new Cart({ body: body, userId: user._id });
+	const cart = new Cart(body, user._id);
 	let product = false;
 	user.cart.map(productId => {
 		if (productId.product == body.product) {

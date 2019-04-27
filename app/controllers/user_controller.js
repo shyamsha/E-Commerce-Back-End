@@ -35,10 +35,9 @@ router.post("/login", (req, res) => {
 });
 router.delete("/logout", authenticationByUser, (req, res) => {
 	const tokenData = req.token;
-	User.findOneAndUpdate(
-		{ _id: req.user._id },
-		{ $pull: { tokens: { token: tokenData } } }
-	)
+	User.findOneAndUpdate(req.user._id, {
+		$pull: { tokens: { token: tokenData } }
+	})
 		.then(user => {
 			user.save().then(user => {
 				res.send({ statusText: "suceessfully logout" });
@@ -50,7 +49,7 @@ router.delete("/logout", authenticationByUser, (req, res) => {
 });
 router.delete("/logoutall", authenticationByUser, (req, res) => {
 	let token = req.token;
-	User.findOneAndUpdate({ _id: req.user._id }, { $set: { tokens: [] } })
+	User.findOneAndUpdate(req.user._id, { $set: { tokens: [] } })
 		.then(user => {
 			user.save().then(user => {
 				res.send({ statusText: "suceessfully logout from all devices" });

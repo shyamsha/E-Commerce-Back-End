@@ -28,10 +28,7 @@ router.get("/:id", authenticationByUser, (req, res) => {
 router.post("/", authenticationByUser, (req, res) => {
 	const body = req.body;
 	const user = req.user;
-	const monthlyCart = new Monthly({
-		body: body,
-		userId: user._id
-	});
+	const monthlyCart = new Monthly(body, user._id);
 	let product = false;
 	user.monthlyCart.map(productId => {
 		if (productId.product == body.product) {
@@ -45,7 +42,7 @@ router.post("/", authenticationByUser, (req, res) => {
 		user
 			.save()
 			.then(user => {
-				res.send({ statusText: "Added Sucessfully" });
+				res.send({ statusText: "Added Sucessfully", product });
 			})
 			.catch(err => {
 				res.status(403).send({
