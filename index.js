@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const port = 3001;
+require("dotenv").config();
 const mongoose = require("./config/db_connect");
 const { categoryController } = require("./app/controllers/category_controller");
 const { productController } = require("./app/controllers/product_controller");

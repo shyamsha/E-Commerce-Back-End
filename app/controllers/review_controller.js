@@ -31,8 +31,8 @@ router.get("/:id", (req, res) => {
 router.post("/", authenticationByUser, (req, res) => {
 	const { title, body, rating, user, product } = req.body;
 	// const review = new Review({ title, body, rating, user, product });
-	const review = new Review({ body: req.body });
-	console.log(req.body);
+	const review = new Review(req.body);
+
 	review
 		.save()
 		.then(review => {

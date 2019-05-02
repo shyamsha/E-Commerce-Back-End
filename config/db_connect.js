@@ -2,10 +2,11 @@
 
 const mongoose = require("mongoose");
 const path = "mongodb://localhost:27017/e_commerce";
+const connection_uri = process.env.MONGODB_URI || process.env.CONNECT_URI;
 
 mongoose.Promise = global.Promise;
 mongoose
-	.connect(path, {
+	.connect(connection_uri, {
 		useNewUrlParser: true
 	})
 	.then(() => {

@@ -2,7 +2,6 @@ const { authenticationByUser } = require("../middlewares/authenticate");
 function autherizationByUser(req, res, next) {
 	if (authenticationByUser) {
 		req.user.role.map(role => {
-			console.log(role);
 			if (role === "admin") {
 				next();
 			} else if (role === "user") {
