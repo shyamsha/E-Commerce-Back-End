@@ -6,43 +6,29 @@ We created a grocery e-commerce app with powerful transactions happen between B2
 
 ## Dependencies and installation
 
-    "name": "Monthly-Commerse_front-end",
-    "version": "0.1.0",
-    "private": true,
+"name": "e-commerce_backend",
+"version": "1.0.0",
+"description": "E_Commerce",
+"main": "index.js",
 
-    "Dependencies"
-    "@date-io/date-fns": "^1.2.0",
-    "@material-ui/core": "^3.9.2",
-    "@material-ui/icons": "^3.0.2",
-    "@material-ui/styles": "^4.0.0-alpha.8",
-    "axios": "^0.18.0",
-    "date-fns": "^2.0.0-alpha.27",
-    "formik": "^1.5.1",
-    "jwt-decode": "^2.2.0",
-    "material-ui": "^1.0.0-beta.47",
+"test": "echo \"Error: no test specified\" && exit 1"
 
-    "material-ui-pickers": "^2.2.4",
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.5",
-    "react-stars": "^2.2.5",
-    "yup": "^0.27.0"
+"license": "ISC",
+"dependencies":
+"aws-sdk": "^2.443.0",
+"bcryptjs": "^2.4.3",
+"cors": "^2.8.5",
+"express": "^4.16.4",
+"express-validator": "^5.3.1",
+"jsonwebtoken": "^8.5.0",
+"jwt-decode": "^2.2.0",
+"mongoose": "^5.4.5",
+"multer": "^1.4.1",
+"multer-s3": "^2.9.0",
+"validator": "^10.11.0"
 
-    "scripts":
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-
-    "eslintConfig"
-    "extends": "react-app"
-
-    "browserslist"
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
+"devDependencies":
+"dotenv": "^7.0.0"
 
 ## Usage
 
